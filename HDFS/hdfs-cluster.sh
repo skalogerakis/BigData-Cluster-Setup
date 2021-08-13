@@ -6,11 +6,14 @@
 # Step 2) Untar the downloaded file
 # Step 3) Move the file to the desired directory(by default the $HOME directory) and rename to hadoop to make things easier
 # Step 4) Export the needed env. variables (Don't forget to activate them in the current shell using source command)
-# Step 5) Overwrite the default config files in $HADOOP_HOME/etc/hadoop with the custom configs found in the folder confFiles
+# Step 5) Overwrite the default config files in $HADOOP_HOME/etc/hadoop with the custom configs found in the folder confFiles. 
+# In the cluster case, also add worker nodes and modify the core-site accordingly to match the master IP
 # Step 6) To grant permission generate ssh-keygen
-# Step 7) Format the HDFS namenode to get things ready
+# Step 7) Check the current IP and if it matches the namenode then format. NOTE: It is important to setup workers first and then the namenodes
 
 HADOOP_VERSION="hadoop-3.3.1"
+HADOOP_MASTER="192.168.2.1834"
+HADOOP_WORKERS="127.3.2.41,127.3.2.51,127.3.2.91"
 
 # TODO maybe add download as an option
 URL="https://ftp.cc.uoc.gr/mirrors/apache/hadoop/common/${HADOOP_VERSION}/${HADOOP_VERSION}.tar.gz"
@@ -57,13 +60,25 @@ echo "ENVIRONMENT VARIABLES ACTIVATED"
 
 sleep 2
 
-# echo $HOME
-# echo $HADOOP_HOME
+echo "Hadoop Home -> "$HADOOP_HOME
 
+
+echo "MODIFY FILES TO MATCH CLUSTER SPECS"
+
+sed -i "s+^<value>hdfs://.*:9000</value>+<value>hdfs://${HADOOP_MASTER}:9000</value>+g" Cluster/core-site.xml
+sed -i "s+^localhost+#localhost+g" Cluster/workers
+
+# Loop the Worker IP's
+for i in $(echo $HADOOP_WORKERS | tr "," "\n")
+do
+  # process
+  echo ${i} >> Cluster/workers
+done
+
+sleep 2
 
 echo "START FILE SYNC"
-
-rsync -raz --progress confFiles/ $HADOOP_HOME/etc/hadoop/
+rsync -raz --progress Cluster/ $HADOOP_HOME/etc/hadoop/
 
 # Solves permission denied issue
 ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
@@ -72,6 +87,14 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 sleep 2
 
-echo "FORMAT HDFS CLUSTER"
+# Fetch the machine from the running IP
+nameNodeCheck=$(ip route get 8.8.8.8 | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}')
+echo "CURRENT IP: "$nameNodeCheck
 
-hdfs namenode -format
+if [ $nameNodeCheck = $HADOOP_MASTER ] 
+then
+	echo "MASTER NODE.FORMAT HDFS CLUSTER"
+	hdfs namenode -format
+else
+	echo "WORKER NODE"
+fi
