@@ -66,7 +66,7 @@ echo "Hadoop Home -> "$HADOOP_HOME
 echo "MODIFY FILES TO MATCH CLUSTER SPECS"
 
 sed -i "s+^<value>hdfs://.*:9000</value>+<value>hdfs://${HADOOP_MASTER}:9000</value>+g" Cluster/core-site.xml
-sed -i "s+^localhost+#localhost+g" Cluster/workers
+sed -i "s+^localhost++g" Cluster/workers
 
 # Loop the Worker IP's
 for i in $(echo $HADOOP_WORKERS | tr "," "\n")
@@ -96,5 +96,6 @@ then
 	echo "MASTER NODE.FORMAT HDFS CLUSTER"
 	hdfs namenode -format
 else
-	echo "WORKER NODE"
+	echo "WORKER NODE. FORMAT HDFS CLUSTER"
+	hdfs namenode -format
 fi
