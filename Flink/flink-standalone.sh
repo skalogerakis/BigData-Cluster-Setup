@@ -7,7 +7,7 @@
 # Step 3) Sync the desired configurations
 # Step 4) Start cluster
 
-FLINK_VERSION="flink-1.13.2"
+FLINK_VERSION="flink-1.13.1"
 SCALA_VERSION="scala_2.12"
 # TODO maybe add download as an option
 URL="https://ftp.cc.uoc.gr/mirrors/apache/flink/${FLINK_VERSION}/${FLINK_VERSION}-bin-${SCALA_VERSION}.tgz"
