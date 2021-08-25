@@ -19,11 +19,11 @@ Execute the following instruction in all the desired machines. It also crucial t
 
     - Modify flink-conf.yaml file
     
-      Locate **jobmanager.rpc.address: localhost** property and replace with  jobmanager.rpc.address: <My_IPv4>. Set <My_IPv4> the IPv4 of the desired JobManager IP address
+      Locate **jobmanager.rpc.address: localhost** property and replace with **jobmanager.rpc.address: <My_IPv4>**. Set <My_IPv4> the IPv4 of the desired JobManager IP address
      
     - Modify masters file
     
-      Simply modify locahost:8081, to <My_IPv4>:8081 to match once again the JobManager’s IP.
+      Modify **locahost:8081**, to **<My_IPv4>:8081** to match once again the JobManager’s IP.
       
     - Modify workers file
     
@@ -31,7 +31,7 @@ Execute the following instruction in all the desired machines. It also crucial t
 
 > NOTE: Another property that is highly recommended to modify is the **taskmanager.numberOfTaskSlots: 1**. The default configuration does not allow to execute concurrent tasks, or even tasks with parallelization more than 1. So modify it to a higher value, however make sure that there are adequate system resources for that case. In general it is recommended to check memory related configurations in flink-conf.yaml file to match each systems capabilities
 
-- Step 5) Start the cluster by executing ./<flink_dir>/bin/start-cluster.sh script on the JobManager machine. Then access cluster via webUI and <JobManagerIPv4>:8081
+- Step 5) Start the cluster by executing ./<flink_dir>/bin/start-cluster.sh script on the JobManager machine. Then access cluster via webUI and <JobManager_IPv4>:8081
   
 ## Troubleshooting
 
