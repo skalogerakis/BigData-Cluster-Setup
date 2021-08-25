@@ -1,7 +1,13 @@
+# Flink Installation
+
 ## Prerequisites
+
+The following requirements must be met at each machine on both standalone and cluster versions 
 
 - Debian-based Linux OS
 - Java 8 or 11
+
+_NOTE: Before executing the desired script check the readme files in the corresponding folders to check for special requirements in each mode_
 
 ### Installing Java
 
