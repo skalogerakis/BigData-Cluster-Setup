@@ -14,7 +14,7 @@ download='true'
 
 if [ $# -eq 0 ]
 then
-	echo "Default behavior"
+	echo "######### DEFAULT BEHAVIOR #########"
 
 else
 
@@ -81,7 +81,6 @@ if [ "$source_option" = true ] ; then
 
 else
 	echo "######### BUILDING FROM BINARIES #########"
-	# TODO maybe add download as an option
 
 	if [ "$download" = true ] ; then
 
