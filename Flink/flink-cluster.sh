@@ -56,4 +56,3 @@ sleep 2
 
 echo "START FILE SYNC"
 rsync -raz --progress Cluster/ $FLINK_HOME/conf/
-
