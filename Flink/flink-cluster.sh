@@ -92,23 +92,27 @@ fi
 if [ "$source_option" = true ] ; then
 	# TODO For now assume that everything is on $HOME DIR, after building the source code 
 
-  echo "######### BUILDING FROM SOURCES OPTION #########"
+  	echo "######### BUILDING FROM SOURCES OPTION #########"
 
-  echo 'export FLINK_HOME=$HOME/flink' >> ~/.bashrc
+	if [ "$download" = true ] ; then
 
-	. ~/.bashrc
+		echo 'export FLINK_HOME=$HOME/flink/build-target' >> ~/.bashrc
 
-	echo "ENVIRONMENT VARIABLES ACTIVATED"
+		. ~/.bashrc
 
-	HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
+		echo "ENVIRONMENT VARIABLES ACTIVATED"
 
-	if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
-	then
-		echo \n\n
-		echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
-	else
-		echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
+		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
+
+		if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
+		then
+			echo \n\n
+			echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
+		else
+			echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
+		fi
 	fi
+
 
 	echo "MODIFY FILES TO MATCH CLUSTER SPECS"
 
