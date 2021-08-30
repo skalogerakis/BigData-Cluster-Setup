@@ -14,7 +14,7 @@ download='true'
 
 if [ $# -eq 0 ]
 then
-	echo "######### DEFAULT BEHAVIOR #########"
+	echo "######### DEFAULT BEHAVIOR. FLINK VERSION -> ${FLINK_VERSION}, SCALA_VERSION -> ${SCALA_VERSION} #########"
 
 else
 
@@ -74,6 +74,16 @@ if [ "$source_option" = true ] ; then
 	echo "ENVIRONMENT VARIABLES ACTIVATED"
 
 	sleep 2
+
+	HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
+
+	if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
+	then
+		echo \n\n
+		echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
+	else
+		echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
+	fi
 
 	echo "######### START CONFIG SYNC #########"
 

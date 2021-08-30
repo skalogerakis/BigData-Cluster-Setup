@@ -1,7 +1,5 @@
 #!/bin/bash -i
 
-
-
 # Steps to setup Flink cluster 
 # Step 1) Download the desired version of Flink
 # Step 2) Untar the downloaded file with the binaries
@@ -19,8 +17,7 @@ download='true'
 
 if [ $# -eq 0 ]
 then
-	echo "######### DEFAULT BEHAVIOR #########"
-
+	echo "######### DEFAULT BEHAVIOR. FLINK VERSION -> ${FLINK_VERSION}, SCALA_VERSION -> ${SCALA_VERSION} #########"
 else
 
 	while test $# -gt 0; do
@@ -85,8 +82,8 @@ else
 	done
 fi
 
+# If either of flink master and workers are not defined exit
 if [[ -z $FLINK_WORKERS || -z $FLINK_MASTER ]]; then
-
 	echo "######### BOTH FLINK MASTER AND WORKERS MUST BE SPECIFIED. EXITING.... "
 	exit -1
 fi
@@ -102,6 +99,16 @@ if [ "$source_option" = true ] ; then
 	. ~/.bashrc
 
 	echo "ENVIRONMENT VARIABLES ACTIVATED"
+
+	HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
+
+	if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
+	then
+		echo \n\n
+		echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
+	else
+		echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
+	fi
 
 	echo "MODIFY FILES TO MATCH CLUSTER SPECS"
 
