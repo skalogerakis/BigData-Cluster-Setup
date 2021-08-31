@@ -18,13 +18,17 @@ An execution example of the script is the following
 
 	./flink-standalone.sh --source 
 
-This example is used when setting up standalone cluster from sources
+This example is used when setting up standalone cluster from sources. 
 
 ### Default behavior
 
 The script was primarily designed to automatically setup flink standalone cluster from scratch on a new machine(or VM). For that reason, the script downloads the binaries from the official flink website, sets required environment variables for the flink environment and allows necessary changes to the config files. In addition, extra dependencies are added to allow Hadoop 3.x version migration.
 
 The **flink-conf.yaml** file in the **/Standalone** dir replaces the existing configuration file in the _$FLINK_HOME/conf_ directory, so any changes in the specific are directly applied on the cluster. Even after the initial execution the **-d, --downloaded** flag allows to apply additional changes to the cluster configurations
+
+### Building from sources
+
+Currently building from sources is not sources is not fully automated via the script. More specifically, the developer must download and build the flink project in the $HOME directory. After following these steps, inside the flink directory a new folder is generated /build-target which is essentially the produced flink environment. The script sets that directory as $FLINK_HOME, downloads the desired dependencies for Hadoop 3.x and sets the configurations from the Standalone directory
 
 ## flink-cluster.sh
 
