@@ -12,8 +12,8 @@
 # Step 7) Check the current IP and if it matches the namenode then format. NOTE: It is important to setup workers first and then the namenodes
 
 HADOOP_VERSION="hadoop-3.3.1"
-HADOOP_MASTER="192.168.2.1834"
-HADOOP_WORKERS="127.3.2.41,127.3.2.51,127.3.2.91"
+HADOOP_MASTER="83.212.109.203"
+HADOOP_WORKERS="83.212.109.198,83.212.101.207"
 
 # TODO maybe add download as an option
 URL="https://ftp.cc.uoc.gr/mirrors/apache/hadoop/common/${HADOOP_VERSION}/${HADOOP_VERSION}.tar.gz"
@@ -53,6 +53,7 @@ echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
 
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
 echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
+echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
 
 . ~/.bashrc
 

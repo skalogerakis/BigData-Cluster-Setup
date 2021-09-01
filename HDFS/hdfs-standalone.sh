@@ -50,6 +50,7 @@ echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
 
 echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
 echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
+echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
 
 . ~/.bashrc
 
