@@ -24,13 +24,13 @@ else
 	  case "$1" in
 	    -h|--help)
 	      echo "options:"
-	      echo "-h, --help                show brief help"
+	      echo "-h, --help                	show brief help"
 	      echo "-source, --source		  	Build from sources flag. "
-	      echo "-flink, --flink		  	  Specify the Flink version to download. Default: flink-1.13.1"
-	      echo "-scala, --scala		  	  Specify the Scala version. Default: scala_2.12"
+	      echo "-flink, --flink		  	  	Specify the Flink version to download. Default: flink-1.13.1"
+	      echo "-scala, --scala		  	  	Specify the Scala version. Default: scala_2.12"
 	      echo "-d, --downloaded		  	Already downloaded binaries flags. (For Config sync). "
-	      echo "-w, --workers		  			Specify the comma delimitered IPs for the Flink worker nodes"
-	      echo "-m, --master		  			Specify the IP for the Flink master node"
+	      echo "-w, --workers		  		Specify the comma delimitered IPs for the Flink worker nodes"
+	      echo "-m, --master		  		Specify the IP for the Flink master node"
 	      exit 0
 	      ;;
 	    -s|--source)

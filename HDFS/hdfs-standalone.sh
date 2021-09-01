@@ -11,55 +11,98 @@
 # Step 7) Format the HDFS namenode to get things ready
 
 HADOOP_VERSION="hadoop-3.3.1"
+download='true'
 
-# TODO maybe add download as an option
-URL="https://ftp.cc.uoc.gr/mirrors/apache/hadoop/common/${HADOOP_VERSION}/${HADOOP_VERSION}.tar.gz"
-ARCHIVE_URL="https://archive.apache.org/dist/hadoop/common/${HADOOP_VERSION}/${HADOOP_VERSION}.tar.gz"
-
-# Try to find the hadoop version in the latest apache download pages and the archive. If the given version
-# is not found in one of the two, then possibly it does not exist
-if wget "$URL"|| wget "$ARCHIVE_URL" 
+if [ $# -eq 0 ]
 then
-	echo \n\n
-	echo "DOWNLOAD COMPLETED SUCCESSFULLY"
+	echo "######### DEFAULT BEHAVIOR. HADOOP VERSION -> ${HADOOP_VERSION} #########"
 else
-	echo ERROR: Failed to find the ${HADOOP_VERSION}. Make sure that the version is spelled correctly.
-	exit -1
+
+	while test $# -gt 0; do
+	  case "$1" in
+	    -h|--help)
+	      echo "options:"
+	      echo "-h, --help                	show brief help"
+	      echo "-hadoop, --hadoop		  	Specify the Hadoop version to download. Default: hadoop-3.3.1"
+	      echo "-d, --downloaded		  	Already downloaded binaries flags. (For Config sync). "
+	      exit 0
+	      ;;
+	    -s|--source)
+	      shift
+	      source_option='true'
+	      ;;
+	    -hadoop|--hadoop)
+	      shift
+
+	      if test $# -gt 0; then
+	        HADOOP_VERSION=$1
+	        echo "######### MODIFIED THE DEFAULT HADOOP VERSION #########"
+	      fi
+	      shift
+	      ;;
+	    -d|--downloaded)
+	      shift
+	      download='false'
+	      ;;
+	    *)
+	      break
+	      ;;
+	  esac
+	done
 fi
 
-# TODO handle untar error. 
-:'
-Both tar commands work in the same way. The goal is to rename the final directory to hadoop. TODO check if the
-first one creates any issues but it seems the best way to go.
-'
-
-tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME --one-top-level=hadoop --strip-components 1
-
-# tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME 
-# mv $HOME/${HADOOP_VERSION} $HOME/hadoop
 
 
-# Export the env variables
-echo 'export HADOOP_HOME=$HOME/hadoop' >> ~/.bashrc
-echo 'export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop' >> ~/.bashrc
-echo 'export HADOOP_MAPRED_HOME=$HADOOP_HOME' >> ~/.bashrc
-echo 'export HADOOP_COMMON_HOME=$HADOOP_HOME' >> ~/.bashrc
-echo 'export HADOOP_HDFS_HOME=$HADOOP_HOME' >> ~/.bashrc
-echo 'export YARN_HOME=$HADOOP_HOME' >> ~/.bashrc
-echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
+if [ "$download" = true ] ; then
 
-echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
-echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
-echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
+	# TODO maybe add download as an option
+	URL="https://ftp.cc.uoc.gr/mirrors/apache/hadoop/common/${HADOOP_VERSION}/${HADOOP_VERSION}.tar.gz"
+	ARCHIVE_URL="https://archive.apache.org/dist/hadoop/common/${HADOOP_VERSION}/${HADOOP_VERSION}.tar.gz"
 
-. ~/.bashrc
+	# Try to find the hadoop version in the latest apache download pages and the archive. If the given version
+	# is not found in one of the two, then possibly it does not exist
+	if wget "$URL"|| wget "$ARCHIVE_URL" 
+	then
+		echo \n\n
+		echo "DOWNLOAD COMPLETED SUCCESSFULLY"
+	else
+		echo ERROR: Failed to find the ${HADOOP_VERSION}. Make sure that the version is spelled correctly.
+		exit -1
+	fi
 
-echo "ENVIRONMENT VARIABLES ACTIVATED"
+	# TODO handle untar error. 
+	:'
+	Both tar commands work in the same way. The goal is to rename the final directory to hadoop. TODO check if the
+	first one creates any issues but it seems the best way to go.
+	'
 
-sleep 2
+	tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME --one-top-level=hadoop --strip-components 1
 
-# echo $HOME
-# echo $HADOOP_HOME
+	# tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME 
+	# mv $HOME/${HADOOP_VERSION} $HOME/hadoop
+
+
+	# Export the env variables
+	echo 'export HADOOP_HOME=$HOME/hadoop' >> ~/.bashrc
+	echo 'export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop' >> ~/.bashrc
+	echo 'export HADOOP_MAPRED_HOME=$HADOOP_HOME' >> ~/.bashrc
+	echo 'export HADOOP_COMMON_HOME=$HADOOP_HOME' >> ~/.bashrc
+	echo 'export HADOOP_HDFS_HOME=$HADOOP_HOME' >> ~/.bashrc
+	echo 'export YARN_HOME=$HADOOP_HOME' >> ~/.bashrc
+	echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
+
+	echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
+	echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
+	echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
+
+	. ~/.bashrc
+
+	echo "ENVIRONMENT VARIABLES ACTIVATED"
+
+	sleep 2
+
+
+fi
 
 
 echo "START FILE SYNC"
