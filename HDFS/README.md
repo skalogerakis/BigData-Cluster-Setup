@@ -7,8 +7,8 @@
 The hdfs-standalone.sh script offers the following CLI parameters
 
 	-h, --help						    Shows brief help
-  -hadoop, --hadoop		  	  Specify the Hadoop version to download. Default: hadoop-3.3.1
-  -d, --downloaded		  	   Already downloaded binaries flags. (For Config sync).
+	-hadoop, --hadoop		  	  Specify the Hadoop version to download. Default: hadoop-3.3.1
+	-d, --downloaded		  	   Already downloaded binaries flags. (For Config sync).
 
 	
 ### Executing the script
@@ -34,10 +34,10 @@ Different config files found in the **/Standalone** directory contain the necess
 The hdfs-cluster.sh script offers the following CLI parameters
 
 	-h, --help						    Shows brief help
-  -hadoop, --hadoop		  	  Specify the Hadoop version to download. Default: hadoop-3.3.1
-  -d, --downloaded		  	  Already downloaded binaries flags. (For Config sync).
-  -w, --workers		  				Specify the comma delimitered IPs for the Hadoop worker nodes (Non-Optional parameter)
-  -m, --master		  				Specify the IP for the Hadoop master node (Non-Optional parameter)
+	-hadoop, --hadoop		  	  Specify the Hadoop version to download. Default: hadoop-3.3.1
+	-d, --downloaded		  	  Already downloaded binaries flags. (For Config sync).
+	-w, --workers		  				Specify the comma delimitered IPs for the Hadoop worker nodes (Non-Optional parameter)
+	-m, --master		  				Specify the IP for the Hadoop master node (Non-Optional parameter)
 
 	
 ### Executing the script
