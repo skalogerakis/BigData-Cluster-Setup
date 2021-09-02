@@ -29,8 +29,8 @@ else
 	      echo "-flink, --flink		  	  	Specify the Flink version to download. Default: flink-1.13.1"
 	      echo "-scala, --scala		  	  	Specify the Scala version. Default: scala_2.12"
 	      echo "-d, --downloaded		  	Already downloaded binaries flags. (For Config sync). "
-	      echo "-w, --workers		  		Specify the comma delimitered IPs for the Flink worker nodes"
-	      echo "-m, --master		  		Specify the IP for the Flink master node"
+	      echo "-w, --workers		  		Specify the comma delimitered IPs for the Flink worker nodes (Non-Optional parameter)"
+	      echo "-m, --master		  		Specify the IP for the Flink master node (Non-Optional parameter)"
 	      exit 0
 	      ;;
 	    -s|--source)

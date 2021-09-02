@@ -29,8 +29,8 @@ else
 	      echo "-h, --help              	Show brief help"
 	      echo "-hadoop, --hadoop		  	  Specify the Hadoop version to download. Default: hadoop-3.3.1"
 	      echo "-d, --downloaded		  		Already downloaded binaries flags. (For Config sync). "
-	      echo "-w, --workers		  				Specify the comma delimitered IPs for the Hadoop worker nodes"
-	      echo "-m, --master		  				Specify the IP for the Hadoop master node"
+	      echo "-w, --workers		  				Specify the comma delimitered IPs for the Hadoop worker nodes (Non-Optional parameter)"
+	      echo "-m, --master		  				Specify the IP for the Hadoop master node (Non-Optional parameter)"
 	      exit 0
 	      ;;
 	    -hadoop|--hadoop)
