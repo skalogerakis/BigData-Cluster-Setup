@@ -7,6 +7,10 @@
 # Step 3) Sync the desired configurations
 # Step 4) Start cluster
 
+# sudo sh -c 'echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre" >> /etc/profile'
+# sudo sh -c 'echo "export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH" >> /etc/profile'
+
+
 source_option='false'
 FLINK_VERSION="flink-1.13.1"
 SCALA_VERSION="scala_2.12"
