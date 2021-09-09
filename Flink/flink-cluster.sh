@@ -15,6 +15,28 @@ FLINK_WORKERS=""
 source_option='false'
 download='true'
 
+
+#Function that checks whether an env variable is defined or not
+env_variable_exists_checker(){
+	temp=$1
+	temp2=$2
+
+
+	if [ -z "${temp}" ] ; then
+		echo "##### ENVIRONMENT VARIABLE NOT DEFINED. #####"	
+		echo "##### DEFINE IN THE PATH -> ${temp2} #####" 
+		sudo sh -c "echo 'export ${temp2}' >> /etc/profile"
+		if [[ $temp2 == JAVA_HOME* ]] ; then
+			sudo sh -c "echo 'export PATH=\$JAVA_HOME/bin:\$PATH' >> /etc/profile"
+		fi
+	else
+		echo "##### ENVIRONMENT VARIABLE -> ${temp} DEFINED. SKIP THAT STEP #####"
+
+	fi
+	echo ""
+}
+
+# Menu Options 
 if [ $# -eq 0 ]
 then
 	echo "######### DEFAULT BEHAVIOR. FLINK VERSION -> ${FLINK_VERSION}, SCALA_VERSION -> ${SCALA_VERSION} #########"
@@ -90,17 +112,18 @@ fi
 
 
 if [ "$source_option" = true ] ; then
+
 	# TODO For now assume that everything is on $HOME DIR, after building the source code 
 
   	echo "######### BUILDING FROM SOURCES OPTION #########"
 
+  	
+
 	if [ "$download" = true ] ; then
 
-		echo 'export FLINK_HOME=$HOME/flink/build-target' >> ~/.bashrc
+		# echo 'export FLINK_HOME=$HOME/flink/build-target' >> ~/.bashrc
 
-		. ~/.bashrc
-
-		echo "ENVIRONMENT VARIABLES ACTIVATED"
+		# . ~/.bashrc
 
 		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
 
@@ -112,6 +135,15 @@ if [ "$source_option" = true ] ; then
 			echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
 		fi
 	fi
+
+	env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/flink/build-target
+	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+	source /etc/profile
+
+	echo "ENVIRONMENT VARIABLES ACTIVATED"
+
+	sleep 2
 
 
 	echo "MODIFY FILES TO MATCH CLUSTER SPECS"
@@ -136,6 +168,8 @@ if [ "$source_option" = true ] ; then
 else
 	echo "######### BUILDING FROM BINARIES #########"
 
+	
+
 	if [ "$download" = true ] ; then
 		URL="https://ftp.cc.uoc.gr/mirrors/apache/flink/${FLINK_VERSION}/${FLINK_VERSION}-bin-${SCALA_VERSION}.tgz"
 		# https://archive.apache.org/dist/flink/flink-1.13.2/flink-1.13.2-src.tgz
@@ -155,13 +189,13 @@ else
 
 		tar -xvf ${FLINK_VERSION}-bin-${SCALA_VERSION}.tgz --directory $HOME --one-top-level=flink --strip-components 1
 
-		echo 'export FLINK_HOME=$HOME/flink' >> ~/.bashrc
+		# echo 'export FLINK_HOME=$HOME/flink' >> ~/.bashrc
 
-		. ~/.bashrc
+		# . ~/.bashrc
 
-		echo "ENVIRONMENT VARIABLES ACTIVATED"
+		
 
-		sleep 2
+
 
 		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
 
@@ -174,6 +208,16 @@ else
 		fi
 
 	fi
+
+	env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/flink
+	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+	source /etc/profile
+
+	echo "ENVIRONMENT VARIABLES ACTIVATED"
+
+	sleep 2
+
 
 	echo "MODIFY FILES TO MATCH CLUSTER SPECS"
 

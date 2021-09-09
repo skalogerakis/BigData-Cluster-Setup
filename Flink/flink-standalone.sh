@@ -27,14 +27,14 @@ env_variable_exists_checker(){
 		echo "##### DEFINE IN THE PATH -> ${temp2} #####" 
 		sudo sh -c "echo 'export ${temp2}' >> /etc/profile"
 		if [[ $temp2 == JAVA_HOME* ]] ; then
-			sudo sh -c "echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /etc/profile"
+			sudo sh -c "echo 'export PATH=\$JAVA_HOME/bin:\$PATH' >> /etc/profile"
 		fi
 	else
 		echo "##### ENVIRONMENT VARIABLE -> ${temp} DEFINED. SKIP THAT STEP #####"
 
 	fi
+	echo ""
 }
-
 
 
 if [ $# -eq 0 ]
@@ -92,14 +92,23 @@ if [ "$source_option" = true ] ; then
 
     echo "######### BUILDING FROM SOURCES OPTION #########"
 
+    env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/build-target
+	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+	# Apply changes in order to avoid other issues
+	source /etc/profile
+
+	echo "ENVIRONMENT VARIABLES ACTIVATED"
+	
+	sleep 2
+
     if [ "$download" = true ] ; then
-		echo 'export FLINK_HOME=$HOME/flink/build-target' >> ~/.bashrc
 
-		. ~/.bashrc
 
-		echo "ENVIRONMENT VARIABLES ACTIVATED"
+		# echo 'export FLINK_HOME=$HOME/flink/build-target' >> ~/.bashrc
 
-		sleep 2
+		# . ~/.bashrc
+		
 
 		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
 
@@ -142,14 +151,6 @@ else
 		tar -xvf ${FLINK_VERSION}-bin-${SCALA_VERSION}.tgz --directory $HOME --one-top-level=flink --strip-components 1
 
 
-		env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=$HOME/flink
-
-		env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-
-		echo "ENVIRONMENT VARIABLES CHECKED"
-
-		sleep 2
-
 		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
 
 		if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
@@ -161,7 +162,14 @@ else
 		fi
 
 	fi
-	
+
+
+	env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/flink
+	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+	source /etc/profile
+	echo "ENVIRONMENT VARIABLES ACTIVATED"
+	sleep 2
+
 	echo "######### START CONFIG SYNC #########"
 
 	rsync -raz --progress Standalone/ $FLINK_HOME/conf/

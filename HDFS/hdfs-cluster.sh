@@ -17,6 +17,30 @@ HADOOP_WORKERS=""
 
 download='true'
 
+#Function that checks whether an env variable is defined or not
+env_variable_exists_checker(){
+	temp=$1
+	temp2=$2
+
+
+	if [ -z "${temp}" ] ; then
+		echo "##### ENVIRONMENT VARIABLE NOT DEFINED. #####"	
+		echo "##### DEFINE IN THE PATH -> ${temp2} #####" 
+		sudo sh -c "echo 'export ${temp2}' >> /etc/profile"
+		source /etc/profile
+		if [[ $temp2 == JAVA_HOME* ]] ; then
+			sudo sh -c "echo 'export PATH=\$JAVA_HOME/bin:\$PATH' >> /etc/profile"
+		elif [[ $temp2 == HADOOP_HOME* ]]; then
+			sudo sh -c "echo 'export PATH=\$HADOOP_HOME/bin:\$PATH' >> /etc/profile"
+		fi
+	else
+		echo "##### ENVIRONMENT VARIABLE -> ${temp} DEFINED. SKIP THAT STEP #####"
+
+	fi
+	echo ""
+}
+
+
 if [ $# -eq 0 ]
 then
 	echo "######### DEFAULT BEHAVIOR. HADOOP VERSION -> ${HADOOP_VERSION} #########"
@@ -94,32 +118,39 @@ if [ "$download" = true ] ; then
 		exit -1
 	fi
 
-	# TODO handle untar error. 
-	:'
-	Both tar commands work in the same way. The goal is to rename the final directory to hadoop. TODO check if the
-	first one creates any issues but it seems the best way to go.
-	'
+
 
 	tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME --one-top-level=hadoop --strip-components 1
 
-	# tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME 
-	# mv $HOME/${HADOOP_VERSION} $HOME/hadoop
+
 
 
 	# Export the env variables
-	echo 'export HADOOP_HOME=$HOME/hadoop' >> ~/.bashrc
-	echo 'export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop' >> ~/.bashrc
-	echo 'export HADOOP_MAPRED_HOME=$HADOOP_HOME' >> ~/.bashrc
-	echo 'export HADOOP_COMMON_HOME=$HADOOP_HOME' >> ~/.bashrc
-	echo 'export HADOOP_HDFS_HOME=$HADOOP_HOME' >> ~/.bashrc
-	echo 'export YARN_HOME=$HADOOP_HOME' >> ~/.bashrc
-	echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
+	# echo 'export HADOOP_HOME=$HOME/hadoop' >> ~/.bashrc
+	# echo 'export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop' >> ~/.bashrc
+	# echo 'export HADOOP_MAPRED_HOME=$HADOOP_HOME' >> ~/.bashrc
+	# echo 'export HADOOP_COMMON_HOME=$HADOOP_HOME' >> ~/.bashrc
+	# echo 'export HADOOP_HDFS_HOME=$HADOOP_HOME' >> ~/.bashrc
+	# echo 'export YARN_HOME=$HADOOP_HOME' >> ~/.bashrc
+	# echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
 
-	echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
-	echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
-	echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
+	# echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
+	# echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
+	# echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
 
-	. ~/.bashrc
+	# . ~/.bashrc
+
+	env_variable_exists_checker "$HADOOP_HOME" HADOOP_HOME=\$HOME/hadoop
+
+	env_variable_exists_checker "$HADOOP_CONF_DIR" HADOOP_CONF_DIR=\$HADOOP_HOME/etc/hadoop
+	env_variable_exists_checker "$HADOOP_MAPRED_HOME" HADOOP_MAPRED_HOME=\$HADOOP_HOME
+	env_variable_exists_checker "$HADOOP_COMMON_HOME" HADOOP_COMMON_HOME=\$HADOOP_HOME
+	env_variable_exists_checker "$HADOOP_HDFS_HOME" HADOOP_HDFS_HOME=\$HADOOP_HOME
+	env_variable_exists_checker "$YARN_HOME" YARN_HOME=\$HADOOP_HOME
+
+	env_variable_exists_checker "$HADOOP_CLASSPATH" HADOOP_CLASSPATH=\$"(hadoop classpath)"
+
+	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 
 	echo "ENVIRONMENT VARIABLES ACTIVATED"
 
