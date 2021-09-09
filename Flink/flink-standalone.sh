@@ -7,14 +7,35 @@
 # Step 3) Sync the desired configurations
 # Step 4) Start cluster
 
-# sudo sh -c 'echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre" >> /etc/profile'
-# sudo sh -c 'echo "export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH" >> /etc/profile'
+# TODO IMPORTANT -> Must reboot in order the env variables to take effect
 
 
 source_option='false'
 FLINK_VERSION="flink-1.13.1"
 SCALA_VERSION="scala_2.12"
 download='true'
+
+
+#Function that checks whether an env variable is defined or not
+env_variable_exists_checker(){
+	temp=$1
+	temp2=$2
+
+
+	if [ -z "${temp}" ] ; then
+		echo "##### ENVIRONMENT VARIABLE NOT DEFINED. #####"	
+		echo "##### DEFINE IN THE PATH -> ${temp2} #####" 
+		sudo sh -c "echo 'export ${temp2}' >> /etc/profile"
+		if [[ $temp2 == JAVA_HOME* ]] ; then
+			sudo sh -c "echo 'export PATH=$JAVA_HOME/bin:$PATH' >> /etc/profile"
+		fi
+	else
+		echo "##### ENVIRONMENT VARIABLE -> ${temp} DEFINED. SKIP THAT STEP #####"
+
+	fi
+}
+
+
 
 if [ $# -eq 0 ]
 then
@@ -120,11 +141,12 @@ else
 
 		tar -xvf ${FLINK_VERSION}-bin-${SCALA_VERSION}.tgz --directory $HOME --one-top-level=flink --strip-components 1
 
-		echo 'export FLINK_HOME=$HOME/flink' >> ~/.bashrc
 
-		. ~/.bashrc
+		env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=$HOME/flink
 
-		echo "ENVIRONMENT VARIABLES ACTIVATED"
+		env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+
+		echo "ENVIRONMENT VARIABLES CHECKED"
 
 		sleep 2
 
