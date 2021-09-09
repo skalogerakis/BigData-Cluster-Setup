@@ -126,20 +126,6 @@ if [ "$download" = true ] ; then
 
 
 	# Export the env variables
-	# echo 'export HADOOP_HOME=$HOME/hadoop' >> ~/.bashrc
-	# echo 'export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop' >> ~/.bashrc
-	# echo 'export HADOOP_MAPRED_HOME=$HADOOP_HOME' >> ~/.bashrc
-	# echo 'export HADOOP_COMMON_HOME=$HADOOP_HOME' >> ~/.bashrc
-	# echo 'export HADOOP_HDFS_HOME=$HADOOP_HOME' >> ~/.bashrc
-	# echo 'export YARN_HOME=$HADOOP_HOME' >> ~/.bashrc
-	# echo 'export PATH=$PATH:$HADOOP_HOME/bin' >> ~/.bashrc
-
-	# echo 'export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre' >> ~/.bashrc
-	# echo 'export PATH=/usr/lib/jvm/java-8-openjdk-amd64/jre/bin:$PATH' >> ~/.bashrc
-	# echo 'export HADOOP_CLASSPATH=$(hadoop classpath)' >> ~/.bashrc
-
-	# . ~/.bashrc
-
 	env_variable_exists_checker "$HADOOP_HOME" HADOOP_HOME=\$HOME/hadoop
 
 	env_variable_exists_checker "$HADOOP_CONF_DIR" HADOOP_CONF_DIR=\$HADOOP_HOME/etc/hadoop
