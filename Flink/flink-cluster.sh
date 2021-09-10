@@ -118,23 +118,20 @@ if [ "$source_option" = true ] ; then
   	echo "######### BUILDING FROM SOURCES OPTION #########"
 
   	
+  	# HADOOP CLASSPATH IN /etc/profile solved the issue with HDFS dependency
+	# if [ "$download" = true ] ; then
 
-	if [ "$download" = true ] ; then
 
-		# echo 'export FLINK_HOME=$HOME/flink/build-target' >> ~/.bashrc
+	# 	HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
 
-		# . ~/.bashrc
-
-		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
-
-		if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
-		then
-			echo \n\n
-			echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
-		else
-			echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
-		fi
-	fi
+	# 	if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
+	# 	then
+	# 		echo \n\n
+	# 		echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
+	# 	else
+	# 		echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
+	# 	fi
+	# fi
 
 	env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/flink/build-target
 	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
@@ -189,23 +186,19 @@ else
 
 		tar -xvf ${FLINK_VERSION}-bin-${SCALA_VERSION}.tgz --directory $HOME --one-top-level=flink --strip-components 1
 
-		# echo 'export FLINK_HOME=$HOME/flink' >> ~/.bashrc
-
-		# . ~/.bashrc
 
 		
 
+		# HADOOP CLASSPATH IN /etc/profile solved the issue with HDFS dependency
+		# HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
 
-
-		HADOOP_URL="https://repository.cloudera.com/artifactory/cloudera-repos/org/apache/flink/flink-shaded-hadoop-3-uber/3.1.1.7.2.8.0-224-9.0/flink-shaded-hadoop-3-uber-3.1.1.7.2.8.0-224-9.0.jar"
-
-		if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
-		then
-			echo \n\n
-			echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
-		else
-			echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
-		fi
+		# if wget -P $FLINK_HOME/lib/ "$HADOOP_URL" 
+		# then
+		# 	echo \n\n
+		# 	echo "######### DOWNLOADED HADOOP 3.x DEPENDENCY #########"
+		# else
+		# 	echo "ERROR -> FAILED TO DOWNLOAD THE HADOOP DEPENDENCY. THIS MAY LEAD TO UNEXPECTED BEHAVIOR"
+		# fi
 
 	fi
 
