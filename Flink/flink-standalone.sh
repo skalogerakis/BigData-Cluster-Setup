@@ -92,9 +92,10 @@ if [ "$source_option" = true ] ; then
 
     echo "######### BUILDING FROM SOURCES OPTION #########"
 
+    source /etc/profile
     env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/build-target
 	env_variable_exists_checker "$JAVA_HOME" JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-
+	
 	# Apply changes in order to avoid other issues
 	source /etc/profile
 

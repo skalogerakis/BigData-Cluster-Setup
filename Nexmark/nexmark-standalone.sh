@@ -62,6 +62,7 @@ else
 	done
 fi
 
+source /etc/profile
 
 # CHECK THE PREREQUISITES STEP -> In case flink is built from source then change the default flink home path
 if [ "$source_option" = true ] ; then
@@ -70,6 +71,7 @@ else
 	env_variable_exists_checker "$FLINK_HOME" FLINK_HOME=\$HOME/flink
 
 fi
+
 
 
 # Check JAVA_HOME path
