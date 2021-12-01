@@ -172,6 +172,9 @@ cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
 sleep 2
 
+echo "REMOVE TEMP FILES"
+sudo rm -rf /tmp/*
+
 # Fetch the machine from the running IP
 nameNodeCheck=$(ip route get 8.8.8.8 | sed -n '/src/{s/.*src *\([^ ]*\).*/\1/p;q}')
 echo "CURRENT IP: "$nameNodeCheck

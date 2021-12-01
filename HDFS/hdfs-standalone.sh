@@ -131,6 +131,9 @@ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
+echo "REMOVE TEMP FILES"
+sudo rm -rf /tmp/*
+
 sleep 2
 
 echo "FORMAT HDFS CLUSTER"
