@@ -134,5 +134,5 @@ rsync -raz --progress $HOME/nexmark/conf/sql-client-defaults.yaml $FLINK_HOME/co
 # done
 
 # Step 6
-
-sed -i "s+^<value>nexmark.metric.reporter.host:.*</value>+<value>nexmark.metric.reporter.host: $NEXMARK_MASTER</value>" $HOME/nexmark/conf/nexmark.yaml
+# TODO for some reason that is not defined correctly
+sed -i "s+^<value>nexmark.metric.reporter.host: .*</value>+<value>nexmark.metric.reporter.host: ${NEXMARK_MASTER}</value>+g" $HOME/nexmark/conf/nexmark.yaml
