@@ -50,7 +50,7 @@ else
 	    -h|--help)
 	      echo "options:"
 	      echo "-h, --help                	show brief help"
-	      echo "-source, --source		  	Build from sources flag. "
+	      echo "-s, --source		  	Build from sources flag. "
 	      echo "-w, --workers		  		Specify the comma delimitered IPs for the Flink worker nodes (Non-Optional parameter)"
 	      echo "-m, --master		  		Specify the IP for the Flink master node (Non-Optional parameter)"
 	      exit 0
@@ -84,7 +84,7 @@ else
 fi
 
 # If either of flink master and workers are not defined exit
-if [[ -z $FLINK_WORKERS || -z $FLINK_MASTER ]]; then
+if [[ -z $NEXMARK_WORKERS || -z $NEXMARK_MASTER ]]; then
 	echo "######### BOTH NEXMARK MASTER AND WORKERS MUST BE SPECIFIED. EXITING.... "
 	exit -1
 fi
@@ -116,7 +116,7 @@ rsync -raz --progress $HOME/nexmark/lib/ $FLINK_HOME/lib
 # Step 3. For now it is easier to just create a folder in $HOME directory
 sed -i "s+^state.checkpoints.dir:.*+state.checkpoints.dir: file://$HOME/checkpoint/state+g" $HOME/nexmark/conf/flink-conf.yaml
 sed -i "s+^state.backend.rocksdb.localdir:.*+state.backend.rocksdb.localdir: $HOME/checkpoint/rocksdb+g" $HOME/nexmark/conf/flink-conf.yaml
-sed -i "s+^jobmanager.rpc.address:.*+jobmanager.rpc.address: $NEXMARK_MASTER" $HOME/nexmark/conf/flink-conf.yaml
+# sed -i "s+^jobmanager.rpc.address:.*+jobmanager.rpc.address: $NEXMARK_MASTER" $HOME/nexmark/conf/flink-conf.yaml
 
 # Step 4
 rsync -raz --progress $HOME/nexmark/conf/flink-conf.yaml $FLINK_HOME/conf
@@ -124,15 +124,15 @@ rsync -raz --progress $HOME/nexmark/conf/flink-conf.yaml $FLINK_HOME/conf
 rsync -raz --progress $HOME/nexmark/conf/sql-client-defaults.yaml $FLINK_HOME/conf
 
 # Step 5
-sed -i "s+^localhost++g" $FLINK_HOME/conf/workers
+# sed -i "s+^localhost++g" $FLINK_HOME/conf/workers
 
 # Loop the Worker IP's
-for i in $(echo $NEXMARK_WORKERS | tr "," "\n")
-do
-	# process
-	echo ${i} >> $FLINK_HOME/conf/workers
-done
+# for i in $(echo $NEXMARK_WORKERS | tr "," "\n")
+# do
+# 	# process
+# 	echo ${i} >> $FLINK_HOME/conf/workers
+# done
 
 # Step 6
 
-sed -i "s+^nexmark.metric.reporter.host:.*+nexmark.metric.reporter.host: $NEXMARK_MASTER" $HOME/nexmark/conf/nexmark.yaml
+sed -i "s+^<value>nexmark.metric.reporter.host:.*</value>+<value>nexmark.metric.reporter.host: $NEXMARK_MASTER</value>" $HOME/nexmark/conf/nexmark.yaml

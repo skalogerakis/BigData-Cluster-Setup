@@ -48,7 +48,7 @@ else
 	    -h|--help)
 	      echo "options:"
 	      echo "-h, --help                show brief help"
-	      echo "-source, --source		  Build from sources flag. "
+	      echo "-s, --source		  Build from sources flag. "
 	      exit 0
 	      ;;
 	    -s|--source)
