@@ -12,6 +12,7 @@
 
 HADOOP_VERSION="hadoop-3.3.1"
 download='true'
+MY_HOME="/media/localdisk/skalogerakis"
 
 
 #Function that checks whether an env variable is defined or not
@@ -95,11 +96,11 @@ if [ "$download" = true ] ; then
 		exit -1
 	fi
 
-	tar -xvf ${HADOOP_VERSION}.tar.gz --directory $HOME --one-top-level=hadoop --strip-components 1
+	tar -xvf ${HADOOP_VERSION}.tar.gz --directory ${MY_HOME} --one-top-level=hadoop --strip-components 1
 
 
 	# Export the env variables
-	env_variable_exists_checker "$HADOOP_HOME" HADOOP_HOME=\$HOME/hadoop
+	env_variable_exists_checker "$HADOOP_HOME" HADOOP_HOME=${MY_HOME}/hadoop
 
 	env_variable_exists_checker "$HADOOP_CONF_DIR" HADOOP_CONF_DIR=\$HADOOP_HOME/etc/hadoop
 	env_variable_exists_checker "$HADOOP_MAPRED_HOME" HADOOP_MAPRED_HOME=\$HADOOP_HOME
@@ -131,8 +132,8 @@ ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa
 
 cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
 
-echo "REMOVE TEMP FILES"
-sudo rm -rf /tmp/*
+# echo "REMOVE TEMP FILES"
+# sudo rm -rf /tmp/*
 
 sleep 2
 
