@@ -157,6 +157,7 @@ export HADOOP_OS_TYPE=${HADOOP_OS_TYPE:-$(uname -s)}
 # Options to pass to SSH when one of the "log into a host and
 # start/stop daemons" scripts is executed
 # export HADOOP_SSH_OPTS="-o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=10s"
+#TODO THIS REMOVE
 export HADOOP_SSH_OPTS=”-p 2222”
 
 # The built-in ssh handler will limit itself to 10 simultaneous connections.
