@@ -25,5 +25,9 @@
 <name>dfs.permission</name>
 <value>false</value>
 </property>
+<property>
+<name>dfs.block.replicator.classname</name>
+<value>org.apache.hadoop.hdfs.server.blockmanagement.BlockPlacementPolicyAffinity</value>
+</property>
 </configuration>
 

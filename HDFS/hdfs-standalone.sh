@@ -10,9 +10,11 @@
 # Step 6) To grant permission generate ssh-keygen
 # Step 7) Format the HDFS namenode to get things ready
 
-HADOOP_VERSION="hadoop-3.3.1"
+HADOOP_VERSION="hadoop-3.2.2"
+# HADOOP_VERSION="hadoop-3.3.1"
 download='true'
-MY_HOME="/media/localdisk/skalogerakis"
+# MY_HOME="/media/localdisk/skalogerakis"
+MY_HOME="/home/skalogerakis"
 
 
 #Function that checks whether an env variable is defined or not
